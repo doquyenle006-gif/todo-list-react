@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import './App.css'
+import todoHero from './assets/todo-hero.svg'
 
 const STORAGE_KEY = 'lesson-05-todos'
 const THEME_KEY = 'lesson-05-theme'
@@ -94,7 +95,7 @@ function App() {
   }
 
   return <main className="app-shell">
-    <header className="app-header"><div><h1>Việc cần làm<span>.</span></h1><p className="subtitle">Tổ chức ngày hôm nay, hoàn thành từng việc một.</p></div><button type="button" className="theme-button" onClick={() => setDarkMode((value) => !value)} aria-label={darkMode ? 'Bật chế độ sáng' : 'Bật chế độ tối'}>{darkMode ? '☼' : '☾'}</button></header>
+    <header className="app-header"><div><h1>Việc cần làm<span>.</span></h1><p className="subtitle">Tổ chức ngày hôm nay, hoàn thành từng việc một.</p><div className="hero-status"><span className="hero-status__label">TIẾN ĐỘ HÔM NAY</span><div className="hero-status__row"><strong>{completed}</strong><span>/ {todos.length} việc xong</span></div><div className="hero-status__track"><span style={{ width: `${todos.length ? (completed / todos.length) * 100 : 0}%` }} /></div></div></div><img className="hero-illustration" src={todoHero} alt="Bảng checklist với các công việc đã hoàn thành" /><button type="button" className="theme-button" onClick={() => setDarkMode((value) => !value)} aria-label={darkMode ? 'Bật chế độ sáng' : 'Bật chế độ tối'}>{darkMode ? '☼' : '☾'}</button></header>
     <section className="composer-section" aria-labelledby="composer-title"><div><h2 id="composer-title">Bắt đầu một việc mới</h2><p>Viết ra điều bạn muốn hoàn thành.</p></div><form className="composer" onSubmit={addTodo}><label className="sr-only" htmlFor="new-todo">Tên công việc mới</label><input id="new-todo" value={newTodo} onChange={(event) => setNewTodo(event.target.value)} placeholder="Ví dụ: Hoàn thiện bài tập Lesson 5" maxLength="120" /><button type="submit" disabled={!newTodo.trim()}>Thêm việc <span aria-hidden="true">+</span></button></form></section>
     <section className="workspace" aria-labelledby="list-title"><div className="workspace__heading"><div><p className="eyebrow">MY TASKS</p><h2 id="list-title">Danh sách công việc</h2></div><span className="task-count">{todos.length} việc</span></div><FilterBar filter={filter} onFilterChange={setFilter} search={search} onSearchChange={setSearch} onClearCompleted={() => setTodos((current) => current.filter((todo) => !todo.completed))} hasCompleted={completed > 0} /><TodoList todos={visibleTodos} onToggle={(id) => setTodos((current) => current.map((todo) => todo.id === id ? { ...todo, completed: !todo.completed } : todo))} onDelete={(id) => setTodos((current) => current.filter((todo) => todo.id !== id))} onEdit={(id, text) => setTodos((current) => current.map((todo) => todo.id === id ? { ...todo, text } : todo))} /></section>
     <Stats total={todos.length} completed={completed} active={todos.length - completed} />
